@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import {IERC20} from "./IERC20.sol";
 import {IERC20Errors} from "./IERC20Errors.sol";
 
+// 合约必须使用最小的交易单位，整币表示应该在合约的交互层处理
 contract ERC20 is IERC20, IERC20Errors {
 
     // 代币名称
@@ -30,8 +31,7 @@ contract ERC20 is IERC20, IERC20Errors {
 
     constructor(uint256 initialSupply) {
         owner = msg.sender;
-        // initialSupply 按“整币”填，比如 1000，就是 1000 * 10^18
-        _mint(msg.sender, initialSupply * (10 ** uint256(decimals)));
+        _mint(msg.sender, initialSupply);
     }
 
     modifier onlyOwner() {
@@ -71,8 +71,8 @@ contract ERC20 is IERC20, IERC20Errors {
    }
 
    //=======合约特有函数========
-    function mint(address to, uint256 amount) external onlyOwner {
-        _mint(to, amount * (10 ** uint256(decimals)));
+    function mint(address account, uint256 amount) external onlyOwner {
+        _mint(account, amount);
     }
 
 
